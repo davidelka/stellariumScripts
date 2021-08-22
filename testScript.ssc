@@ -6,6 +6,7 @@
 // Description: sun-set polaris planets
 //
 
+
 include("save_state.inc");
 
 saveState("start");
@@ -26,7 +27,7 @@ function constTravel(cons, before, art)
 		ConstellationMgr.setFlagArt(false);
 	}
 }
-/
+
 
 function FastAndSlow(fast, delay, stopSpeed)
 {
@@ -76,7 +77,7 @@ function setStage()
 	LandscapeMgr.setFlagFog(true);
 	StelMovementMgr.autoZoomIn(3);
 
-	StelMovementMgr.setAutoMoveDuration(2)
+	StelMovementMgr.setAutoMoveDuration(2);
 	
 	core.goHome();
 	StelMovementMgr.autoZoomIn(1);
@@ -111,11 +112,10 @@ core.waitFor("2021-08-12T17:30:01");
 
 pause();
 
-//core.pauseScript() 	
 StelMovementMgr.zoomTo(110,5);
 StelMovementMgr.turnUp(true);
 
-goToNPole(30)
+goToNPole(30);
 
 FastAndSlow(50,0.01,5);
 StelMovementMgr.turnUp(false);
