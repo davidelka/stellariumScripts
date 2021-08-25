@@ -2,9 +2,12 @@
 // Name: planetarium emu
 // License: Public Domain
 // Author: David Elkayam
-// Version: 0.2
+// Version: 0.3
+// Date:    25.8.21
 // Description: sun-set polaris planets
 //
+//
+
 
 
 include("save_state.inc");
@@ -42,8 +45,9 @@ function outAndIn(object)
 {
 	core.wait(2);
 	StelMovementMgr.autoZoomOut(2);
-	core.wait(0.7);
+	core.wait(1);
 	StelMovementMgr.autoZoomOut(2);
+	core.wait(2);
 	core.selectObjectByName(object, false);
 	StelMovementMgr.setFlagTracking(true);
 	core.wait(0.5);
@@ -52,8 +56,9 @@ function outAndIn(object)
 	StelMovementMgr.autoZoomIn(2);
 	core.wait(0.5);
 	StelMovementMgr.autoZoomIn(2);
-
+	core.wait(0.5);
 }
+
 
 function pause()
 {
@@ -82,6 +87,7 @@ function setStage()
 	core.goHome();
 	StelMovementMgr.autoZoomIn(1);
 	core.setTimeRate(0);
+	StelMovementMgr.deselection();
 }
 
 function goToNPole()
@@ -91,6 +97,57 @@ function goToNPole()
 	core.setObserverLocation(15, 90 , 100, t);
 }
 
+function cons_travel()
+{
+	
+	var travrel = new Array("Ursa Minor", "Ursa Major", "Libra");
+	
+	ConstellationMgr.setFlagIsolateSelected(true);
+	ConstellationMgr.setFlagConstellationPick(true);
+
+	ConstellationMgr.deselectConstellations();
+	
+	for(i = 0; i < travrel.length; i++){
+		core.selectConstellationByName(travrel[i]);
+		StelMovementMgr.autoZoomIn(3);
+		StelMovementMgr.zoomTo(80,2);
+		pause();
+		
+		ConstellationMgr.setFlagLines(true);
+		pause();
+		core.wait(2);
+		ConstellationMgr.setFlagLines(false);
+		ConstellationMgr.deselectConstellations();
+	}
+
+	ConstellationMgr.setFlagConstellationPick(false);
+	ConstellationMgr.setFlagIsolateSelected(false);
+}
+
+function planet_travel()
+{
+	
+	var travrel = new Array("Moon", "Mars", "Venus", "Saturn", "Sun");
+	
+	ConstellationMgr.deselectConstellations();
+	
+	LandscapeMgr.setFlagLandscape(false);
+	LandscapeMgr.setFlagAtmosphere(false);
+	LandscapeMgr.setFlagFog(false);
+	
+	for(i = 0; i < travrel.length; i++){
+		outAndIn(travrel[i]);
+		core.wait(3);
+		pause();	
+	}
+	
+	LandscapeMgr.setFlagLandscape(true);
+	
+	LandscapeMgr.setFlagAtmosphere(true);
+	LandscapeMgr.setFlagFog(true);
+}
+
+var location;
 
 setStage();
 
@@ -101,83 +158,48 @@ core.setDate("2021:08:12T15:00:01");
 LabelMgr.labelScreen("2021-08-12 19:00:01", 200, 200, true, 20, "#ff0000");
 core.wait(5);
 LabelMgr.deleteAllLabels();
+StelMovementMgr.deselection();
 
+StelMovementMgr.deselection();
 pause();
+
 
 core.selectObjectByName("Sun", false);
 StelMovementMgr.setFlagTracking(true);
 StelMovementMgr.setFlagTracking(false);
+StelMovementMgr.deselection();
+
 FastAndSlow(500,0.08,100);
+
 core.waitFor("2021-08-12T17:30:01");
+
+
 
 pause();
 
 StelMovementMgr.zoomTo(110,5);
 StelMovementMgr.turnUp(true);
 
+location = core.getObserverLocation();
 goToNPole(30);
+
+pause();
 
 FastAndSlow(50,0.01,5);
 StelMovementMgr.turnUp(false);
 ConstellationMgr.setFlagIsolateSelected(true);
 
-core.selectConstellationByName("Ursa Minor");
-StelMovementMgr.autoZoomIn(2);
-StelMovementMgr.zoomTo(80,2);
-core.wait(8);
-
-
-
-ConstellationMgr.setFlagLines(true);
 pause();
-core.wait(2);
-ConstellationMgr.setFlagLines(false);
+core.setObserverLocation(location, 5);
+pause();
 
-
-core.selectConstellationByName("Ursa Major");
-StelMovementMgr.autoZoomIn(2);
-StelMovementMgr.zoomTo(80,2);
-core.wait(8);
-
-ConstellationMgr.setFlagLines(true);
-core.wait(2);
-ConstellationMgr.setFlagLines(false);
-
-
-core.selectConstellationByName("Libra");
-StelMovementMgr.autoZoomIn(2);
-StelMovementMgr.zoomTo(80,2);
-core.wait(8);
-
-ConstellationMgr.setFlagLines(true);
-core.wait(2);
-ConstellationMgr.setFlagLines(false);
-ConstellationMgr.setFlagConstellationPick(false);
-ConstellationMgr.setFlagIsolateSelected(false);
 
 LandscapeMgr.setFlagAtmosphere(false);
 LandscapeMgr.setFlagFog(false);
 
-LandscapeMgr.setFlagLandscape(false);
-outAndIn("Moon");
-core.wait(2);
-pause();
-outAndIn("Mars");
-core.wait(2);
-pause();
-outAndIn("Venus");
-core.wait(2);
-pause();
-outAndIn("Saturn");
-core.wait(3);
-pause();
-// go to mimas
-outAndIn("Saturn ");
-core.wait(3);
-pause();
-outAndIn("Sun");
-LandscapeMgr.setFlagAtmosphere(true);
-LandscapeMgr.setFlagFog(true);
+cons_travel();
+planet_travel();
+
 
 StelMovementMgr.setFlagTracking(false);
 
