@@ -147,10 +147,59 @@ function planet_travel()
 	LandscapeMgr.setFlagFog(true);
 }
 
-var location;
+function place_time(time, city)
+{
+	var location;
+	
+	
+	time = "-1948:08:12T15:00:01"
+	
+	location = core.getObserverLocation();
+	core.setObserverLocation(city, 5);
+	core.setDate(time);
+	LabelMgr.labelScreen("2021-08-12 19:00:01\n   city: TODO", 200, 200, true, 20, "#ff0000");
+	core.wait(5);	
+
+	core.setObserverLocation(location, 5);
+}
+
+
+var g_location;
 
 setStage();
 
+//	avrham avinu
+//	set time and place
+//	shut lights
+//	reduce air pollusion
+//	get out
+//	cycle sight
+//  come back
+//	(david hamelch)
+//	shmuel
+//	
+//	constelltion
+//	mazarot	
+//	ksil
+//	kima
+// (zoom in to kima)
+//
+//	mazalot
+//	turn on zodiac
+//	remove atmosphere
+//	fast farward
+//	(see the planets trace)
+//	go out - see the planets trace (all on the same mishor)
+//	place - sun - see the mishor of the planet
+//	go back
+//
+//	(time for month zodiac)
+//
+//
+//	big clock
+//
+//
+//
 
 
 StelMovementMgr.lookWest(true);
@@ -180,7 +229,7 @@ pause();
 StelMovementMgr.zoomTo(110,5);
 StelMovementMgr.turnUp(true);
 
-location = core.getObserverLocation();
+g_location = core.getObserverLocation();
 goToNPole(30);
 
 pause();
@@ -190,7 +239,7 @@ StelMovementMgr.turnUp(false);
 ConstellationMgr.setFlagIsolateSelected(true);
 
 pause();
-core.setObserverLocation(location, 5);
+core.setObserverLocation(g_location, 5);
 pause();
 
 
